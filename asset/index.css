@@ -1,0 +1,13 @@
+.title {
+  color: #000;
+  font-weight: 800;
+}
+
+h3 > a {
+  color: #ffa7c4;
+  text-decoration: none;
+}
+
+.hljs {
+  overflow-x: auto;
+}

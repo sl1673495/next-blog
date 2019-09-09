@@ -1,0 +1,22 @@
+html {
+  font: 100%/1.75 'Merriweather','Georgia',serif;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+
+* {
+  box-sizing: inherit;
+}
+
+*:before {
+  box-sizing: inherit;
+}
+
+*:after {
+  box-sizing: inherit;
+}
+
+a {
+  text-decoration: none;
+  color:#333;
+}
