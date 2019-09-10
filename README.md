@@ -13,7 +13,7 @@ yarn
 ```
 yarn dev
 ```
-导出博客：
+导出博客(会放在out目录下，导出后请进入out目录后启动anywhere或者http-server类似的静态服务然后访问)：
 ```
 yarn all
 ```
