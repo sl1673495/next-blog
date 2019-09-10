@@ -1,11 +1,12 @@
 import Link from 'next/link'
+import config from '../config'
 
 export default function Header() {
   return (
     <div>
       <h2 className="title">
         <Link href="/">
-          <a>ssh的前端博客</a>
+          <a>{config.user.name}的前端博客</a>
         </Link>
       </h2>
       <style jsx>{`

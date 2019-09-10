@@ -1,20 +1,21 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="referrer" content="no-referrer"/><link rel="stylesheet" href="/static/index.css" type="text/css"/><link rel="stylesheet" href="/static/hljs.css" type="text/css"/><link rel="stylesheet" href="/static/reset.css" type="text/css"/><title>ssh的前端博客</title><meta charSet="utf-8"/><meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/><meta name="next-head-count" content="2"/><link rel="preload" href="/_next/static/xOgs5LJb4U_tj9UWKyzRL/pages/365105510.js" as="script"/><link rel="preload" href="/_next/static/xOgs5LJb4U_tj9UWKyzRL/pages/_app.js" as="script"/><link rel="preload" href="/_next/static/chunks/22.bfe4263dd9514139326f.js" as="script"/><link rel="preload" href="/_next/static/runtime/webpack-61b9af2a86c3f75f3f39.js" as="script"/><link rel="preload" href="/_next/static/chunks/commons.d68ea2aa3f883ebc2d53.js" as="script"/><link rel="preload" href="/_next/static/runtime/main-7ca00c6bb257c339c190.js" as="script"/><style id="__jsx-4024170534">.title.jsx-4024170534{margin-top:0;margin-bottom:42px;}.title.jsx-4024170534 a.jsx-4024170534{color:var(--textTitle);-webkit-text-decoration:none;text-decoration:none;}</style><style id="__jsx-2472489444">body{--textTitle:rgb(255,167,196);}</style><style id="__jsx-3985023768">.title.jsx-625829589{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;color:var(--textNormal);}.avatar.jsx-625829589{width:50px;height:50px;border-radius:50%;}</style></head><body><div id="__next"><div style="max-width:672px;margin:auto;padding:42px 21px"><div class="jsx-4024170534"><h2 class="jsx-4024170534 title"><a class="jsx-4024170534" href="/">ssh的前端博客</a></h2></div><div class="jsx-625829589 markdown-body"><h1 class="jsx-625829589 title">Vue源码学习（1）起源</h1><div><h3 id="一切的开始">一切的开始</h3>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="referrer" content="no-referrer"/><link rel="stylesheet" href="/static/index.css" type="text/css"/><link rel="stylesheet" href="/static/hljs.css" type="text/css"/><link rel="stylesheet" href="/static/reset.css" type="text/css"/><link rel="stylesheet" href="/static/markdown.css" type="text/css"/><title>ssh的前端博客</title><meta charSet="utf-8"/><meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/><meta name="next-head-count" content="2"/><link rel="preload" href="/_next/static/sRx8BjZglL9PSHp0plaZ3/pages/365105510.js" as="script"/><link rel="preload" href="/_next/static/sRx8BjZglL9PSHp0plaZ3/pages/_app.js" as="script"/><link rel="preload" href="/_next/static/chunks/22.bfe4263dd9514139326f.js" as="script"/><link rel="preload" href="/_next/static/runtime/webpack-61b9af2a86c3f75f3f39.js" as="script"/><link rel="preload" href="/_next/static/chunks/commons.80342d5a09c6f0ef20e1.js" as="script"/><link rel="preload" href="/_next/static/runtime/main-7ca00c6bb257c339c190.js" as="script"/><style id="__jsx-4024170534">.title.jsx-4024170534{margin-top:0;margin-bottom:42px;}.title.jsx-4024170534 a.jsx-4024170534{color:var(--textTitle);-webkit-text-decoration:none;text-decoration:none;}</style><style id="__jsx-2472489444">body{--textTitle:rgb(255,167,196);}</style><style id="__jsx-4063293197">.title.jsx-1776941920{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;color:var(--textNormal);}.avatar.jsx-1776941920{width:50px;height:50px;border-radius:50%;}.comment.jsx-1776941920{margin-bottom:32px;border-bottom:1px solid #eee;}.user.jsx-1776941920{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;}.login.jsx-1776941920{color:var(--textLink);-webkit-text-decoration:none;text-decoration:none;}.avatar.jsx-1776941920{width:32px;height:32px;border-radius:50%;margin-right:8px;}</style></head><body><div id="__next"><div style="max-width:672px;margin:auto;padding:42px 21px"><div class="jsx-4024170534"><h2 class="jsx-4024170534 title"><a class="jsx-4024170534" href="/">ssh<!-- -->的前端博客</a></h2></div><div class="jsx-1776941920 markdown-body"><h1 class="jsx-1776941920 title">Vue源码学习（1）起源</h1><div><h3>一切的开始</h3>
 <p>Vue这个神奇的构造函数的起源：./instance/index.js</p>
-<p>调用几种mixin方法给Vue添加了很多能力。<br>在用户执行new Vue()的时候 执行this._init</p>
+<p>调用几种mixin方法给Vue添加了很多能力。
+在用户执行new Vue()的时候 执行this._init</p>
 <pre><code>// 从五个文件导入五个方法（不包括 warn）
-import { initMixin } from &#39;./init&#39;
-import { stateMixin } from &#39;./state&#39;
-import { renderMixin } from &#39;./render&#39;
-import { eventsMixin } from &#39;./events&#39;
-import { lifecycleMixin } from &#39;./lifecycle&#39;
-import { warn } from &#39;../util/index&#39;
+import { initMixin } from './init'
+import { stateMixin } from './state'
+import { renderMixin } from './render'
+import { eventsMixin } from './events'
+import { lifecycleMixin } from './lifecycle'
+import { warn } from '../util/index'
 
 // 定义 Vue 构造函数
 function Vue (options) {
-  if (process.env.NODE_ENV !== &#39;production&#39; &amp;&amp;
+  if (process.env.NODE_ENV !== 'production' &amp;&amp;
     !(this instanceof Vue)
   ) {
-    warn(&#39;Vue is a constructor and should be called with the `new` keyword&#39;)
+    warn('Vue is a constructor and should be called with the `new` keyword')
   }
   this._init(options)
 }
@@ -27,23 +28,27 @@ lifecycleMixin(Vue)
 renderMixin(Vue)
 
 // 导出 Vue
-export default Vue</code></pre><h3 id="initmixin">initMixin</h3>
+export default Vue
+</code></pre>
+<h3>initMixin</h3>
 <p>这个方法的作用就是在 Vue 的原型上添加了 _init 方法，这个 _init 方法看上去应该是内部初始化的一个方法，其实在 instance/index.js 文件中我们是见过这个方法的，如下：</p>
 <pre><code>export function initMixin (Vue: Class&lt;Component&gt;) {
   Vue.prototype._init = function (options?: Object) {
     // ... _init 方法的函数体，此处省略
   }
-}</code></pre><h3 id="statemixin">stateMixin</h3>
+}
+</code></pre>
+<h3>stateMixin</h3>
 <p>Vue示例上的$data和$props实际指向this._data和this._props，只读属性</p>
 <pre><code>const dataDef = {}
   dataDef.get = function () { return this._data }
   const propsDef = {}
   propsDef.get = function () { return this._props }
-  if (process.env.NODE_ENV !== &#39;production&#39;) {
+  if (process.env.NODE_ENV !== 'production') {
     dataDef.set = function (newData: Object) {
       warn(
-        &#39;Avoid replacing instance root $data. &#39; +
-        &#39;Use nested data properties instead.&#39;,
+        'Avoid replacing instance root $data. ' +
+        'Use nested data properties instead.',
         this
       )
     }
@@ -51,8 +56,10 @@ export default Vue</code></pre><h3 id="initmixin">initMixin</h3>
       warn(`$props is readonly.`, this)
     }
   }
-  Object.defineProperty(Vue.prototype, &#39;$data&#39;, dataDef)
-  Object.defineProperty(Vue.prototype, &#39;$props&#39;, propsDef)</code></pre><p>定义了3个很重要的api，后面响应式我们再细细品味。</p>
+  Object.defineProperty(Vue.prototype, '$data', dataDef)
+  Object.defineProperty(Vue.prototype, '$props', propsDef)
+</code></pre>
+<p>定义了3个很重要的api，后面响应式我们再细细品味。</p>
 <pre><code>  Vue.prototype.$set = set
   Vue.prototype.$delete = del
 
@@ -61,18 +68,24 @@ export default Vue</code></pre><h3 id="initmixin">initMixin</h3>
     cb: any,
     options?: Object
   ): Function {
-      // ...
-  }</code></pre><h3 id="eventsmixin">eventsMixin</h3>
+  	// ...
+  }
+</code></pre>
+<h3>eventsMixin</h3>
 <p>也是定义了几个熟悉的api，用来在vue内部实现事件总线</p>
 <pre><code>Vue.prototype.$on = function (event: string | Array&lt;string&gt;, fn: Function): Component {}
 Vue.prototype.$once = function (event: string, fn: Function): Component {}
 Vue.prototype.$off = function (event?: string | Array&lt;string&gt;, fn?: Function): Component {}
-Vue.prototype.$emit = function (event: string): Component {}</code></pre><h3 id="lifecyclemixin">lifecycleMixin</h3>
+Vue.prototype.$emit = function (event: string): Component {}
+</code></pre>
+<h3>lifecycleMixin</h3>
 <p>这几个就相对陌生点了</p>
 <pre><code>Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {}
 Vue.prototype.$forceUpdate = function () {}
-Vue.prototype.$destroy = function () {}</code></pre><h3 id="rendermixin">renderMixin</h3>
-<p>为Vue添加渲染方法，和熟悉的$nextTick </p>
+Vue.prototype.$destroy = function () {}
+</code></pre>
+<h3>renderMixin</h3>
+<p>为Vue添加渲染方法，和熟悉的$nextTick</p>
 <pre><code>export function installRenderHelpers (target: any) {
   target._o = markOnce
   target._n = toNumber
@@ -92,41 +105,53 @@ Vue.prototype.$destroy = function () {}</code></pre><h3 id="rendermixin">renderM
 }
 
 Vue.prototype.$nextTick = function (fn: Function) {}
-Vue.prototype._render = function (): VNode {}</code></pre><p>至此，instance/index.js 文件中的代码就运行完毕了</p>
-<h3 id="vue-构造函数的静态属性和方法（全局api）">Vue 构造函数的静态属性和方法（全局API）</h3>
+Vue.prototype._render = function (): VNode {}
+</code></pre>
+<p>至此，instance/index.js 文件中的代码就运行完毕了</p>
+<h3>Vue 构造函数的静态属性和方法（全局API）</h3>
 <p>给Vue添加全局函数</p>
-<pre><code>initGlobalAPI(Vue)</code></pre><p>这里有一段注释，大概意思是 Vue.util 以及 util 下的四个方法都不被认为是公共API的一部分，要避免依赖他们，但是你依然可以使用，只不过风险你要自己控制。并且，在官方文档上也并没有介绍这个全局API，所以能不用尽量不要用。就像eval函数一样，充满神奇的魔力，但又很危险。</p>
+<pre><code>initGlobalAPI(Vue)
+</code></pre>
+<p>这里有一段注释，大概意思是 Vue.util 以及 util 下的四个方法都不被认为是公共API的一部分，要避免依赖他们，但是你依然可以使用，只不过风险你要自己控制。并且，在官方文档上也并没有介绍这个全局API，所以能不用尽量不要用。就像eval函数一样，充满神奇的魔力，但又很危险。</p>
 <pre><code>Vue.util = {
-    warn,
-    extend,
-    mergeOptions,
-    defineReactive
-}</code></pre><p>在 initGlobalAPI 方法的最后部分，以 Vue 为参数调用了四个 init* 方法：</p>
+	warn,
+	extend,
+	mergeOptions,
+	defineReactive
+}
+</code></pre>
+<p>在 initGlobalAPI 方法的最后部分，以 Vue 为参数调用了四个 init* 方法：</p>
 <pre><code>initUse(Vue)
 initMixin(Vue)
 initExtend(Vue)
-initAssetRegisters(Vue)</code></pre><h3 id="inituse">initUse</h3>
+initAssetRegisters(Vue)
+</code></pre>
+<h3>initUse</h3>
 <p>定义了use方法，给外部扩展Vue功能用</p>
 <pre><code>/* @flow */
 
-import { toArray } from &#39;../util/index&#39;
+import { toArray } from '../util/index'
 
 export function initUse (Vue: GlobalAPI) {
   Vue.use = function (plugin: Function | Object) {
     // ...
   }
-}</code></pre><h3 id="initmixin-1">initMixin</h3>
+}
+</code></pre>
+<h3>initMixin</h3>
 <p>定义了mixin方法，其实内部调用了mergeOptions这个api，合并了配置。</p>
 <pre><code>/* @flow */
 
-import { mergeOptions } from &#39;../util/index&#39;
+import { mergeOptions } from '../util/index'
 
 export function initMixin (Vue: GlobalAPI) {
   Vue.mixin = function (mixin: Object) {
     this.options = mergeOptions(this.options, mixin)
     return this
   }
-}</code></pre><h3 id="initextend">initExtend</h3>
+}
+</code></pre>
+<h3>initExtend</h3>
 <p>initExtend 方法在 Vue 上添加了 Vue.cid 静态属性，和 Vue.extend 静态方法。</p>
 <pre><code>export function initExtend (Vue: GlobalAPI) {
   /**
@@ -143,8 +168,13 @@ export function initMixin (Vue: GlobalAPI) {
   Vue.extend = function (extendOptions: Object): Function {
     // ...
   }
-}</code></pre><h3 id="initassetregisters">initAssetRegisters</h3>
-<p>经过了这一步 Vue又多了三个静态方法<br>Vue.component<br>Vue.directive<br>Vue.filter</p>
+}
+</code></pre>
+<h3>initAssetRegisters</h3>
+<p>经过了这一步 Vue又多了三个静态方法
+Vue.component
+Vue.directive
+Vue.filter</p>
 <pre><code>export function initAssetRegisters (Vue: GlobalAPI) {
   /**
    * Create asset registration methods.
@@ -157,7 +187,9 @@ export function initMixin (Vue: GlobalAPI) {
       // ......
     }
   })
-}</code></pre><p>为Vue示例添加<strong>patch</strong>和$mount方法</p>
+}
+</code></pre>
+<p>为Vue示例添加__patch__和$mount方法</p>
 <pre><code>// install platform patch function
 Vue.prototype.__patch__ = inBrowser ? patch : noop
 
@@ -168,16 +200,18 @@ Vue.prototype.$mount = function (
 ): Component {
   el = el &amp;&amp; inBrowser ? query(el) : undefined
   return mountComponent(this, el, hydrating)
-}</code></pre><h3 id="with-compiler">with compiler</h3>
+}
+</code></pre>
+<h3>with compiler</h3>
 <pre><code>// ... 其他 import 语句
 
 // 导入 运行时 的 Vue
-import Vue from &#39;./runtime/index&#39;
+import Vue from './runtime/index'
 
 // ... 其他 import 语句
 
 // 从 ./compiler/index.js 文件导入 compileToFunctions
-import { compileToFunctions } from &#39;./compiler/index&#39;
+import { compileToFunctions } from './compiler/index'
 
 // 根据 id 获取元素的 innerHTML
 const idToTemplate = cached(id =&gt; {
@@ -202,7 +236,7 @@ function getOuterHTML (el: Element): string {
   if (el.outerHTML) {
     return el.outerHTML
   } else {
-    const container = document.createElement(&#39;div&#39;)
+    const container = document.createElement('div')
     container.appendChild(el.cloneNode(true))
     return container.innerHTML
   }
@@ -212,10 +246,12 @@ function getOuterHTML (el: Element): string {
 Vue.compile = compileToFunctions
 
 // 导出 Vue
-export default Vue</code></pre><p>上面代码是简化过的，但是保留了所有重要的部分，该文件的开始是一堆 import 语句，其中重要的两句 import 语句就是上面代码中出现的那两句，一句是导入运行时的 Vue，一句是从 ./compiler/index.js 文件导入 compileToFunctions，并且在倒数第二句代码将其添加到 Vue.compile 上。</p>
+export default Vue
+</code></pre>
+<p>上面代码是简化过的，但是保留了所有重要的部分，该文件的开始是一堆 import 语句，其中重要的两句 import 语句就是上面代码中出现的那两句，一句是导入运行时的 Vue，一句是从 ./compiler/index.js 文件导入 compileToFunctions，并且在倒数第二句代码将其添加到 Vue.compile 上。</p>
 <p>然后定义了一个函数 idToTemplate，这个函数的作用是：获取拥有指定 id 属性的元素的 innerHTML。</p>
 <p>之后缓存了运行时版 Vue 的 Vue.prototype.$mount 方法，并且进行了重写。</p>
 <p>接下来又定义了 getOuterHTML 函数，用来获取一个元素的 outerHTML。</p>
 <p>这个文件运行下来，对 Vue 的影响有两个，第一个影响是它重写了 Vue.prototype.$mount 方法；第二个影响是添加了 Vue.compile 全局API，目前我们只需要获取这些信息就足够了，我们把这些影响同样更新到 附录 对应的文件中，也都可以查看的到。</p>
 <p>到这里，Vue 神秘面具下真实的样子基本已经展现出来了。现在深呼吸，继续我们的探索吧！</p>
-</div></div></div></div><script id="__NEXT_DATA__" type="application/json">{"dataManager":"[]","props":{"pageProps":{}},"page":"/365105510","query":{},"buildId":"xOgs5LJb4U_tj9UWKyzRL","nextExport":true,"dynamicIds":["+FGM","+fC4","0kiY","1LUk","28xz","2Vkh","3EHr","3gkP","3wag","4Q+X","4qfg","5VxD","5upZ","6ZBy","6k3J","6quq","73oX","75kF","7P7d","7mzT","7oys","8Kqh","8Pgg","8SK+","9Fqr","9G73","9JLW","9Mhc","9Nr/","9Q8I","9U8A","9c9R","9xzc","AIHI","Aayt","Agkw","AhXs","ApBa","Aqyh","AsRY","B05S","BIHe","BKhn","BLBw","BrQc","CyL5","D68y","DxbC","DzyG","E2cJ","EGmf","FIf5","FJ32","G+vv","G01c","GEZ5","GTAt","GgYO","GwJY","Gxxu","H2RM","H4p3","ImXp","JCUK","JGhL","Jb18","Jjkb","JopO","Jrxr","KK3C","KQfT","KUpP","KcjC","Kjk6","KpOm","KyKy","LOdI","LhHj","Ll1m","Lns6","Lo5G","LptB","MF4s","MQ8/","My+Z","NRrW","NyhX","OZ3z","PGlF","PziN","Q5ZB","QPTg","QQjU","QnJG","RLXu","ROUN","Rq6a","SF9x","SLii","Sl5E","T0rU","TdF3","UCcd","UFGb","UI5O","Uasv","VrLj","WSH0","Wj43","WtIr","Xfvt","YROV","YSo5","ZrqW","alHH","beiO","d4EH","ddo8","dnrZ","dycj","e8E9","ebWy","el66","fDA8","fEaW","fHEK","fP8y","fZ2E","gLO8","gmEm","gst6","hmeD","iTGd","ieeH","iobV","irpp","jKVu","jU8F","jW1C","jctj","kZ3Q","lE5/","lKKg","lRCX","lURu","ldBm","m/If","mBTZ","mY11","mzJY","n3/M","nwyE","o0In","oKc0","oU5B","oVRe","oVqn","on2m","ozyK","phP4","pvv5","pw5m","pxCe","qIW7","qUGr","qZUF","r0Rl","r7oX","rfnV","rnof","s8Vx","sM9k","sbla","syIQ","t6qC","tSgA","tluB","u0OR","u2N3","u34i","uIR8","uQpx","uR4j","unZW","vYiF","wB1n","wi1Z","xj1T","yOV0"]}</script><script async="" data-next-page="/365105510" src="/_next/static/xOgs5LJb4U_tj9UWKyzRL/pages/365105510.js"></script><script async="" data-next-page="/_app" src="/_next/static/xOgs5LJb4U_tj9UWKyzRL/pages/_app.js"></script><script async="" src="/_next/static/chunks/22.bfe4263dd9514139326f.js"></script><script src="/_next/static/runtime/webpack-61b9af2a86c3f75f3f39.js" async=""></script><script src="/_next/static/chunks/commons.d68ea2aa3f883ebc2d53.js" async=""></script><script src="/_next/static/runtime/main-7ca00c6bb257c339c190.js" async=""></script></body></html>
+</div><div class="jsx-1776941920 comments"></div></div></div></div><script id="__NEXT_DATA__" type="application/json">{"dataManager":"[]","props":{"pageProps":{}},"page":"/365105510","query":{},"buildId":"sRx8BjZglL9PSHp0plaZ3","nextExport":true,"dynamicIds":["+FGM","+fC4","0kiY","1LUk","28xz","2Vkh","3EHr","3gkP","3wag","4Q+X","4qfg","5VxD","5upZ","6ZBy","6k3J","6quq","73oX","75kF","7P7d","7mzT","7oys","8Kqh","8Pgg","8SK+","9Fqr","9G73","9JLW","9Mhc","9Nr/","9Q8I","9U8A","9c9R","9xzc","AIHI","Aayt","Agkw","AhXs","ApBa","Aqyh","AsRY","B05S","BIHe","BKhn","BLBw","BrQc","CyL5","D68y","DxbC","DzyG","E2cJ","EGmf","FIf5","FJ32","G+vv","G01c","GEZ5","GTAt","GgYO","GwJY","Gxxu","H2RM","H4p3","ImXp","JCUK","JGhL","Jb18","Jjkb","JopO","Jrxr","KK3C","KQfT","KUpP","KcjC","Kjk6","KpOm","KyKy","LOdI","LhHj","Ll1m","Lns6","Lo5G","LptB","MF4s","MQ8/","My+Z","NRrW","NyhX","OZ3z","PGlF","PziN","Q5ZB","QPTg","QQjU","QnJG","RLXu","ROUN","Rq6a","SF9x","SLii","Sl5E","T0rU","TdF3","UCcd","UFGb","UI5O","Uasv","VrLj","WSH0","Wj43","WtIr","Xfvt","YROV","YSo5","ZrqW","alHH","beiO","d4EH","ddo8","dnrZ","dycj","e8E9","ebWy","el66","fDA8","fEaW","fHEK","fP8y","fZ2E","gLO8","gmEm","gst6","hmeD","iTGd","ieeH","iobV","irpp","jKVu","jU8F","jW1C","jctj","kZ3Q","lE5/","lKKg","lRCX","lURu","ldBm","m/If","mBTZ","mY11","mzJY","n3/M","nwyE","o0In","oKc0","oU5B","oVRe","oVqn","on2m","ozyK","phP4","pvv5","pw5m","pxCe","qIW7","qUGr","qZUF","r0Rl","r7oX","rfnV","rnof","s8Vx","sM9k","sbla","syIQ","t6qC","tSgA","tluB","u0OR","u2N3","u34i","uIR8","uQpx","uR4j","unZW","vYiF","wB1n","wi1Z","xj1T","yOV0"]}</script><script async="" data-next-page="/365105510" src="/_next/static/sRx8BjZglL9PSHp0plaZ3/pages/365105510.js"></script><script async="" data-next-page="/_app" src="/_next/static/sRx8BjZglL9PSHp0plaZ3/pages/_app.js"></script><script async="" src="/_next/static/chunks/22.bfe4263dd9514139326f.js"></script><script src="/_next/static/runtime/webpack-61b9af2a86c3f75f3f39.js" async=""></script><script src="/_next/static/chunks/commons.80342d5a09c6f0ef20e1.js" async=""></script><script src="/_next/static/runtime/main-7ca00c6bb257c339c190.js" async=""></script></body></html>

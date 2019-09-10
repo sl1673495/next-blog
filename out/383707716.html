@@ -1,40 +1,66 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="referrer" content="no-referrer"/><link rel="stylesheet" href="/static/index.css" type="text/css"/><link rel="stylesheet" href="/static/hljs.css" type="text/css"/><link rel="stylesheet" href="/static/reset.css" type="text/css"/><title>ssh的前端博客</title><meta charSet="utf-8"/><meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/><meta name="next-head-count" content="2"/><link rel="preload" href="/_next/static/xOgs5LJb4U_tj9UWKyzRL/pages/383707716.js" as="script"/><link rel="preload" href="/_next/static/xOgs5LJb4U_tj9UWKyzRL/pages/_app.js" as="script"/><link rel="preload" href="/_next/static/chunks/22.bfe4263dd9514139326f.js" as="script"/><link rel="preload" href="/_next/static/runtime/webpack-61b9af2a86c3f75f3f39.js" as="script"/><link rel="preload" href="/_next/static/chunks/commons.d68ea2aa3f883ebc2d53.js" as="script"/><link rel="preload" href="/_next/static/runtime/main-7ca00c6bb257c339c190.js" as="script"/><style id="__jsx-4024170534">.title.jsx-4024170534{margin-top:0;margin-bottom:42px;}.title.jsx-4024170534 a.jsx-4024170534{color:var(--textTitle);-webkit-text-decoration:none;text-decoration:none;}</style><style id="__jsx-2472489444">body{--textTitle:rgb(255,167,196);}</style><style id="__jsx-3985023768">.title.jsx-625829589{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;color:var(--textNormal);}.avatar.jsx-625829589{width:50px;height:50px;border-radius:50%;}</style></head><body><div id="__next"><div style="max-width:672px;margin:auto;padding:42px 21px"><div class="jsx-4024170534"><h2 class="jsx-4024170534 title"><a class="jsx-4024170534" href="/">ssh的前端博客</a></h2></div><div class="jsx-625829589 markdown-body"><h1 class="jsx-625829589 title">关于如何触发浏览器重绘的一些尝试。</h1><div><p>我们动态的往body节点上挂一个小球 并且更改它的top值 让它触发动画<br>（以下代码均在chrome控制台执行）</p>
-<pre><code class="language-js">var div = document.createElement(&#39;div&#39;)
-div.style.cssText = &#39;position: fixed;width: 30px; height: 30px; left: 0; top: 0; background: red;transition: all 1s&#39;
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="referrer" content="no-referrer"/><link rel="stylesheet" href="/static/index.css" type="text/css"/><link rel="stylesheet" href="/static/hljs.css" type="text/css"/><link rel="stylesheet" href="/static/reset.css" type="text/css"/><link rel="stylesheet" href="/static/markdown.css" type="text/css"/><title>ssh的前端博客</title><meta charSet="utf-8"/><meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/><meta name="next-head-count" content="2"/><link rel="preload" href="/_next/static/sRx8BjZglL9PSHp0plaZ3/pages/383707716.js" as="script"/><link rel="preload" href="/_next/static/sRx8BjZglL9PSHp0plaZ3/pages/_app.js" as="script"/><link rel="preload" href="/_next/static/chunks/22.bfe4263dd9514139326f.js" as="script"/><link rel="preload" href="/_next/static/runtime/webpack-61b9af2a86c3f75f3f39.js" as="script"/><link rel="preload" href="/_next/static/chunks/commons.80342d5a09c6f0ef20e1.js" as="script"/><link rel="preload" href="/_next/static/runtime/main-7ca00c6bb257c339c190.js" as="script"/><style id="__jsx-4024170534">.title.jsx-4024170534{margin-top:0;margin-bottom:42px;}.title.jsx-4024170534 a.jsx-4024170534{color:var(--textTitle);-webkit-text-decoration:none;text-decoration:none;}</style><style id="__jsx-2472489444">body{--textTitle:rgb(255,167,196);}</style><style id="__jsx-4063293197">.title.jsx-1776941920{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;color:var(--textNormal);}.avatar.jsx-1776941920{width:50px;height:50px;border-radius:50%;}.comment.jsx-1776941920{margin-bottom:32px;border-bottom:1px solid #eee;}.user.jsx-1776941920{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;}.login.jsx-1776941920{color:var(--textLink);-webkit-text-decoration:none;text-decoration:none;}.avatar.jsx-1776941920{width:32px;height:32px;border-radius:50%;margin-right:8px;}</style></head><body><div id="__next"><div style="max-width:672px;margin:auto;padding:42px 21px"><div class="jsx-4024170534"><h2 class="jsx-4024170534 title"><a class="jsx-4024170534" href="/">ssh<!-- -->的前端博客</a></h2></div><div class="jsx-1776941920 markdown-body"><h1 class="jsx-1776941920 title">关于如何触发浏览器重绘的一些尝试。</h1><div><p>我们动态的往body节点上挂一个小球 并且更改它的top值 让它触发动画
+（以下代码均在chrome控制台执行）</p>
+<pre><code class="language-js">var div = document.createElement('div')
+div.style.cssText = 'position: fixed;width: 30px; height: 30px; left: 0; top: 0; background: red;transition: all 1s'
 document.body.appendChild(div)
-div.style.top = &#39;500px&#39;</code></pre>
+div.style.top = '500px'
+</code></pre>
 <p>这样写是没用的，因为浏览器很聪明，它会把你在一次task中的样式更改收集起来，再执行渲染的时候再把它一次性改变，但是网上很多人说getComputedStyle这个api可以直接触发重绘，那么我们来试试</p>
-<pre><code class="language-js">var div = document.createElement(&#39;div&#39;)
-div.style.cssText = &#39;position: fixed;width: 30px; height: 30px; left: 0; top: 0; background: red;transition: all 1s&#39;
+<pre><code class="language-js">var div = document.createElement('div')
+div.style.cssText = 'position: fixed;width: 30px; height: 30px; left: 0; top: 0; background: red;transition: all 1s'
 document.body.appendChild(div)
 
 // 想触发重绘
 getComputedStyle(div)
-div.style.top = &#39;500px&#39;</code></pre>
+div.style.top = '500px'
+</code></pre>
 <p>按理说应该会执行动画吧， 可是并没有，这很让人疑惑，我们再这样试试</p>
-<pre><code class="language-js">var div = document.createElement(&#39;div&#39;)
-div.style.cssText = &#39;position: fixed;width: 30px; height: 30px; left: 0; top: 0; background: red;transition: all 1s&#39;
+<pre><code class="language-js">var div = document.createElement('div')
+div.style.cssText = 'position: fixed;width: 30px; height: 30px; left: 0; top: 0; background: red;transition: all 1s'
 document.body.appendChild(div)
 
 // 想触发重绘
 getComputedStyle(div).top
-div.style.top = &#39;500px&#39;</code></pre>
+div.style.top = '500px'
+</code></pre>
 <p>咦，这次终于执行动画了，看来浏览器优化程度到了这一步，就算你去getComputedStyle 它也会惰性的给你返回一个对象， 等到你真正的去读取里面的样式值，才会触发重绘。</p>
 <p>再来一个小实验，我们想要让浏览器闪烁两个颜色</p>
-<pre><code class="language-js">document.body.style.background = &#39;blue&#39;
-document.body.style.background = &#39;red&#39;</code></pre>
+<pre><code class="language-js">document.body.style.background = 'blue'
+document.body.style.background = 'red'
+</code></pre>
 <p>显而易见这样是没用的， 那么我们用setTimeout去让中间经历一次浏览器渲染</p>
-<pre><code class="language-js">document.body.style.background = &#39;blue&#39;
-setTimeout(() =&gt; { document.body.style.background = &#39;red&#39; })</code></pre>
+<pre><code class="language-js">document.body.style.background = 'blue'
+setTimeout(() =&gt; { document.body.style.background = 'red' })
+</code></pre>
 <p>这次好像可以了 把这段代码在浏览器里执行多次， 会发现有时候还是会直接变成红色背景，这是为什么呢？ 我们继续做个试验</p>
-<pre><code class="language-js">document.body.style.background = &#39;blue&#39;
-setTimeout(() =&gt; { document.body.style.background = &#39;red&#39; }, 16.7)</code></pre>
+<pre><code class="language-js">document.body.style.background = 'blue'
+setTimeout(() =&gt; { document.body.style.background = 'red' }, 16.7)
+</code></pre>
 <p>这段代码再执行n次， 这下每次都会闪烁两种颜色了， 16.7是个什么数字呢，我们一般电脑的屏幕刷新率是60hz，也就是每秒更新60次视图，1000ms / 60 ≈ 16.7 浏览器会根据你的屏幕刷新率去约束渲染线程的执行，去除掉多余无效的渲染。</p>
-<p>那牵扯到硬件，假如我们的刷新率只有30hz呢， 或者更多，更少呢？<br>这也就是为什么浏览器给我们提供了一个api叫requestAnimationFrame，不懂的朋友们可以去查阅一下这个api的用法。<br>真正保证屏幕一定会闪烁两次的做法</p>
+<p>那牵扯到硬件，假如我们的刷新率只有30hz呢， 或者更多，更少呢？
+这也就是为什么浏览器给我们提供了一个api叫requestAnimationFrame，不懂的朋友们可以去查阅一下这个api的用法。
+真正保证屏幕一定会闪烁两次的做法</p>
 <pre><code class="language-js">requestAnimationFrame(() =&gt; {
-  document.body.style.background = &#39;red&#39; 
+  document.body.style.background = 'red' 
   requestAnimationFrame(() =&gt; {
-    document.body.style.background = &#39;blue&#39;
+    document.body.style.background = 'blue'
   })
-})</code></pre>
-</div></div></div></div><script id="__NEXT_DATA__" type="application/json">{"dataManager":"[]","props":{"pageProps":{}},"page":"/383707716","query":{},"buildId":"xOgs5LJb4U_tj9UWKyzRL","nextExport":true,"dynamicIds":["+FGM","+fC4","0kiY","1LUk","28xz","2Vkh","3EHr","3gkP","3wag","4Q+X","4qfg","5VxD","5upZ","6ZBy","6k3J","6quq","73oX","75kF","7P7d","7mzT","7oys","8Kqh","8Pgg","8SK+","9Fqr","9G73","9JLW","9Mhc","9Nr/","9Q8I","9U8A","9c9R","9xzc","AIHI","Aayt","Agkw","AhXs","ApBa","Aqyh","AsRY","B05S","BIHe","BKhn","BLBw","BrQc","CyL5","D68y","DxbC","DzyG","E2cJ","EGmf","FIf5","FJ32","G+vv","G01c","GEZ5","GTAt","GgYO","GwJY","Gxxu","H2RM","H4p3","ImXp","JCUK","JGhL","Jb18","Jjkb","JopO","Jrxr","KK3C","KQfT","KUpP","KcjC","Kjk6","KpOm","KyKy","LOdI","LhHj","Ll1m","Lns6","Lo5G","LptB","MF4s","MQ8/","My+Z","NRrW","NyhX","OZ3z","PGlF","PziN","Q5ZB","QPTg","QQjU","QnJG","RLXu","ROUN","Rq6a","SF9x","SLii","Sl5E","T0rU","TdF3","UCcd","UFGb","UI5O","Uasv","VrLj","WSH0","Wj43","WtIr","Xfvt","YROV","YSo5","ZrqW","alHH","beiO","d4EH","ddo8","dnrZ","dycj","e8E9","ebWy","el66","fDA8","fEaW","fHEK","fP8y","fZ2E","gLO8","gmEm","gst6","hmeD","iTGd","ieeH","iobV","irpp","jKVu","jU8F","jW1C","jctj","kZ3Q","lE5/","lKKg","lRCX","lURu","ldBm","m/If","mBTZ","mY11","mzJY","n3/M","nwyE","o0In","oKc0","oU5B","oVRe","oVqn","on2m","ozyK","phP4","pvv5","pw5m","pxCe","qIW7","qUGr","qZUF","r0Rl","r7oX","rfnV","rnof","s8Vx","sM9k","sbla","syIQ","t6qC","tSgA","tluB","u0OR","u2N3","u34i","uIR8","uQpx","uR4j","unZW","vYiF","wB1n","wi1Z","xj1T","yOV0"]}</script><script async="" data-next-page="/383707716" src="/_next/static/xOgs5LJb4U_tj9UWKyzRL/pages/383707716.js"></script><script async="" data-next-page="/_app" src="/_next/static/xOgs5LJb4U_tj9UWKyzRL/pages/_app.js"></script><script async="" src="/_next/static/chunks/22.bfe4263dd9514139326f.js"></script><script src="/_next/static/runtime/webpack-61b9af2a86c3f75f3f39.js" async=""></script><script src="/_next/static/chunks/commons.d68ea2aa3f883ebc2d53.js" async=""></script><script src="/_next/static/runtime/main-7ca00c6bb257c339c190.js" async=""></script></body></html>
+})
+</code></pre>
+</div><div class="jsx-1776941920 comments"><div class="jsx-1776941920 comment"><div class="jsx-1776941920 user"><img src="https://avatars1.githubusercontent.com/u/23615778?v=4" class="jsx-1776941920 avatar"/><a href="https://github.com/sl1673495" class="jsx-1776941920 login">sl1673495</a></div><div><blockquote>
+<p>膜拜大佬...666技术好文。这里本菜鸡也来分享一波：
+之前遇到requestAnimFrame 这个api会存在兼容性的问题，
+一般涉及动画可以这样，做个回调，在浏览器不支持这个api接口的时候，可以这样：
+window.requestAnimFrame = (function(){
+return window.requestAnimationFrame ||
+window.webkitRequestAnimationFrame ||
+window.mozRequestAnimationFrame ||
+function( callback ){
+window.setTimeout(callback, 16.7);
+};
+})();</p>
+<p>另外，有个建议，动画模块在不考虑兼容的情况，千万不要因为想要贪图方便用jq的animate()，在某些特效上会卡帧（相信有朋友也像我一样被坑过），请优先考虑使用css3。这也是一个坑。
+如果，如果，要做一些比较兼容的特效，可以去了解一下animate.css，很好用。</p>
+</blockquote>
+<p>谢谢分享</p>
+</div></div></div></div></div></div><script id="__NEXT_DATA__" type="application/json">{"dataManager":"[]","props":{"pageProps":{}},"page":"/383707716","query":{},"buildId":"sRx8BjZglL9PSHp0plaZ3","nextExport":true,"dynamicIds":["+FGM","+fC4","0kiY","1LUk","28xz","2Vkh","3EHr","3gkP","3wag","4Q+X","4qfg","5VxD","5upZ","6ZBy","6k3J","6quq","73oX","75kF","7P7d","7mzT","7oys","8Kqh","8Pgg","8SK+","9Fqr","9G73","9JLW","9Mhc","9Nr/","9Q8I","9U8A","9c9R","9xzc","AIHI","Aayt","Agkw","AhXs","ApBa","Aqyh","AsRY","B05S","BIHe","BKhn","BLBw","BrQc","CyL5","D68y","DxbC","DzyG","E2cJ","EGmf","FIf5","FJ32","G+vv","G01c","GEZ5","GTAt","GgYO","GwJY","Gxxu","H2RM","H4p3","ImXp","JCUK","JGhL","Jb18","Jjkb","JopO","Jrxr","KK3C","KQfT","KUpP","KcjC","Kjk6","KpOm","KyKy","LOdI","LhHj","Ll1m","Lns6","Lo5G","LptB","MF4s","MQ8/","My+Z","NRrW","NyhX","OZ3z","PGlF","PziN","Q5ZB","QPTg","QQjU","QnJG","RLXu","ROUN","Rq6a","SF9x","SLii","Sl5E","T0rU","TdF3","UCcd","UFGb","UI5O","Uasv","VrLj","WSH0","Wj43","WtIr","Xfvt","YROV","YSo5","ZrqW","alHH","beiO","d4EH","ddo8","dnrZ","dycj","e8E9","ebWy","el66","fDA8","fEaW","fHEK","fP8y","fZ2E","gLO8","gmEm","gst6","hmeD","iTGd","ieeH","iobV","irpp","jKVu","jU8F","jW1C","jctj","kZ3Q","lE5/","lKKg","lRCX","lURu","ldBm","m/If","mBTZ","mY11","mzJY","n3/M","nwyE","o0In","oKc0","oU5B","oVRe","oVqn","on2m","ozyK","phP4","pvv5","pw5m","pxCe","qIW7","qUGr","qZUF","r0Rl","r7oX","rfnV","rnof","s8Vx","sM9k","sbla","syIQ","t6qC","tSgA","tluB","u0OR","u2N3","u34i","uIR8","uQpx","uR4j","unZW","vYiF","wB1n","wi1Z","xj1T","yOV0"]}</script><script async="" data-next-page="/383707716" src="/_next/static/sRx8BjZglL9PSHp0plaZ3/pages/383707716.js"></script><script async="" data-next-page="/_app" src="/_next/static/sRx8BjZglL9PSHp0plaZ3/pages/_app.js"></script><script async="" src="/_next/static/chunks/22.bfe4263dd9514139326f.js"></script><script src="/_next/static/runtime/webpack-61b9af2a86c3f75f3f39.js" async=""></script><script src="/_next/static/chunks/commons.80342d5a09c6f0ef20e1.js" async=""></script><script src="/_next/static/runtime/main-7ca00c6bb257c339c190.js" async=""></script></body></html>

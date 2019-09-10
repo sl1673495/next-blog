@@ -44,3 +44,8 @@ h3 > a {
 .markdown-body img {
   max-width: 100%;
 }
+
+.markdown-body a {
+  color: var(--textLink);
+  text-decoration: none;
+}

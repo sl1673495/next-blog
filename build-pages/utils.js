@@ -17,7 +17,7 @@ function delDir(path) {
   }
 }
 
-function clean(dir) {
+function rebuild(dir) {
   // 清空md文件夹
   if (fs.existsSync(dir)) {
     delDir(dir)
@@ -28,13 +28,19 @@ function clean(dir) {
 
 async function withOra(fn, tip = 'loading...') {
   const spinner = ora(tip).start();
-  const result = await fn()
-  spinner.stop()
-  return result
+
+  try {
+    const result = await fn()
+    spinner.stop()
+    return result
+  } catch (error) {
+    spinner.stop()
+    throw error
+  }
 }
 
 module.exports = {
   withOra,
   delDir,
-  clean,
+  rebuild,
 };

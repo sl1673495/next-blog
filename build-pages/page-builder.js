@@ -3,28 +3,49 @@
  */
 const fs = require('fs')
 const path = require('path')
-const marked = require('marked')
-const { mdDir, pageDir } = require('../config')
-const { clean } = require('./utils')
+const MarkdownIt = require('markdown-it')
+const axios = require('axios')
+const {
+  mdDir, pageDir, client_id, client_secret,
+} = require('../config')
+const { rebuild } = require('./utils')
 
-marked.setOptions({
-  gfm: true,
-  tables: true,
-  breaks: true,
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
 })
 
-module.exports = (blogs) => {
+const handleMarkdownBody = (body) => {
+  return encodeURIComponent(md.render(body))
+}
+
+module.exports = async (blogs) => {
   // 清空pages文件夹
-  // clean(pageDir)
+  // rebuild(pageDir)
 
   const mdPaths = fs.readdirSync(mdDir)
-  mdPaths.forEach((mdPath) => {
+  mdPaths.forEach(async (mdPath) => {
     const mdContent = fs.readFileSync(path.join(mdDir, mdPath)).toString()
     // pages下的页面根据id命名
     const mdId = Number(mdPath.replace('.md', ''))
     const blog = blogs.find(({ id }) => id === mdId)
 
+    // body已经在md文件夹内了 不需要了
     const { body, ...restBlog } = blog
+    const { comments_url } = restBlog
+
+    const { data: comments } = await axios.get(comments_url, {
+      params: {
+        client_id,
+        client_secret,
+      },
+    })
+
+    // 处理评论的markdown文本
+    comments.forEach(({ body: commentBody }, index) => {
+      const commentHtml = handleMarkdownBody(commentBody)
+      comments[index].html = commentHtml
+    })
 
     if (blog) {
       const pageContent = `
@@ -32,11 +53,12 @@ module.exports = (blogs) => {
 
       export default withMd({
         blog: ${JSON.stringify(restBlog)},
-        html: \`${encodeURIComponent(marked(mdContent))}\`,
+        comments: ${JSON.stringify(comments)},
+        html: \`${handleMarkdownBody(mdContent)}\`,
       })
     `
       const blogDir = path.join(pageDir, `${mdId}`)
-      clean(blogDir)
+      rebuild(blogDir)
       fs.writeFileSync(path.join(blogDir, 'index.jsx'), pageContent, 'utf8')
     }
   })

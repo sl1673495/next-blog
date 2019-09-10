@@ -1,6 +1,7 @@
 import Document, {
   Html, Head, Main, NextScript,
 } from 'next/document'
+import config from '../config'
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -17,7 +18,8 @@ class MyDocument extends Document {
           <link rel="stylesheet" href="/static/index.css" type="text/css" />
           <link rel="stylesheet" href="/static/hljs.css" type="text/css" />
           <link rel="stylesheet" href="/static/reset.css" type="text/css" />
-          <title>ssh的前端博客</title>
+          <link rel="stylesheet" href="/static/markdown.css" type="text/css" />
+          <title>{config.user.name}的前端博客</title>
         </Head>
         <body>
           <Main />
