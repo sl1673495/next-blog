@@ -6,9 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "sync": "node build/index.js",
-    "gen": "node build/gen.js",
     "export": "next export",
+    "sync": "node build-pages/index.js",
     "all": "npm run sync && npm run build && npm run export"
   },
   "dependencies": {
