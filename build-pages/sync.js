@@ -6,7 +6,7 @@ const fs = require('fs')
 const path = require('path')
 const { rebuild } = require('./utils')
 const {
-  repo: { owner, name }, client_id, client_secret, mdDir,
+  repo: { owner, name }, mdDir,
 } = require('../config')
 
 const GITHUB_BASE_URL = 'https://api.github.com'
@@ -17,7 +17,7 @@ module.exports = async () => {
   try {
     // 请求github博客内容
     const { data: blogs } = await axios.get(
-      `${GITHUB_BASE_URL}/repos/${owner}/${name}/issues?client_id=${client_id}&client_secret=${client_secret}`,
+      `${GITHUB_BASE_URL}/repos/${owner}/${name}/issues`,
     )
 
     // 创建md文件

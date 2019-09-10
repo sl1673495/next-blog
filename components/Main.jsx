@@ -52,6 +52,7 @@ export default ({ blogs }) => {
         <style jsx>{`
             .title-link {
               color: var(--textLink);
+              text-decoration: none;
             }
           `}
         </style>
@@ -63,7 +64,6 @@ export default ({ blogs }) => {
     <div className="blogs">
       {renderIntroduce()}
       {renderBlogs()}
-
     </div>
   )
 }

@@ -4,7 +4,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const templatePath = path.resolve(__dirname, '../template/index.jsx')
+const templatePath = path.resolve(__dirname, '../pages-template/index.jsx')
 const indexPath = path.resolve(__dirname, '../pages/index.jsx')
 const templateContent = fs.readFileSync(templatePath, 'utf8')
 

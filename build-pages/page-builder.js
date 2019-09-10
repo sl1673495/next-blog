@@ -6,9 +6,9 @@ const path = require('path')
 const MarkdownIt = require('markdown-it')
 const axios = require('axios')
 const {
-  mdDir, pageDir, client_id, client_secret,
+  mdDir, pageDir,
 } = require('../config')
-const { rebuild } = require('./utils')
+const { rebuild, copyFolder } = require('./utils')
 
 const md = new MarkdownIt({
   html: true,
@@ -19,9 +19,13 @@ const handleMarkdownBody = (body) => {
   return encodeURIComponent(md.render(body))
 }
 
+const pageTemplateDir = path.resolve(__dirname, '../pages-template')
+
 module.exports = async (blogs) => {
   // 清空pages文件夹
-  // rebuild(pageDir)
+  rebuild(pageDir)
+  // 把pages-template目录的模板拷贝到pages下
+  await copyFolder(pageTemplateDir, pageDir)
 
   const mdPaths = fs.readdirSync(mdDir)
   mdPaths.forEach(async (mdPath) => {
@@ -34,12 +38,7 @@ module.exports = async (blogs) => {
     const { body, ...restBlog } = blog
     const { comments_url } = restBlog
 
-    const { data: comments } = await axios.get(comments_url, {
-      params: {
-        client_id,
-        client_secret,
-      },
-    })
+    const { data: comments } = await axios.get(comments_url)
 
     // 处理评论的markdown文本
     comments.forEach(({ body: commentBody }, index) => {
@@ -58,7 +57,7 @@ module.exports = async (blogs) => {
       })
     `
       const blogDir = path.join(pageDir, `${mdId}`)
-      rebuild(blogDir)
+      fs.mkdirSync(blogDir)
       fs.writeFileSync(path.join(blogDir, 'index.jsx'), pageContent, 'utf8')
     }
   })

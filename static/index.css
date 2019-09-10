@@ -32,20 +32,6 @@ h1 {
   line-height: 1.1;
 }
 
-h3 > a {
-  color: var(--pink);
-  text-decoration: none;
-}
-
 .hljs {
   overflow-x: auto;
-}
-
-.markdown-body img {
-  max-width: 100%;
-}
-
-.markdown-body a {
-  color: var(--textLink);
-  text-decoration: none;
 }
