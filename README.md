@@ -1,8 +1,11 @@
 # next-blog
-利用nextjs静态导出html的功能实现博客。
+利用nextjs静态导出html的功能实现同步github issues博客
 
 ### 预览地址
 http://blog.shanshihao.cn
+
+### 对应的我的github blog仓库
+https://github.com/sl1673495/blogs
 
 ### 运行
 安装依赖：
