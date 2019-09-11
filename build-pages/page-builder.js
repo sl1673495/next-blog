@@ -28,25 +28,27 @@ module.exports = async (blogs) => {
   await copyFolder(pageTemplateDir, pageDir)
 
   const mdPaths = fs.readdirSync(mdDir)
-  mdPaths.forEach(async (mdPath) => {
+  const convertMdToJSX = async (mdPath) => {
     const mdContent = fs.readFileSync(path.join(mdDir, mdPath)).toString()
     // pages下的页面根据id命名
     const mdId = Number(mdPath.replace('.md', ''))
     const blog = blogs.find(({ id }) => id === mdId)
 
-    // body已经在md文件夹内了 不需要了
-    const { body, ...restBlog } = blog
-    const { comments_url } = restBlog
-
-    const { data: comments } = await axios.get(comments_url)
-
-    // 处理评论的markdown文本
-    comments.forEach(({ body: commentBody }, index) => {
-      const commentHtml = handleMarkdownBody(commentBody)
-      comments[index].html = commentHtml
-    })
-
     if (blog) {
+      // body已经在md文件夹内了 不需要了
+      const { body, ...restBlog } = blog
+      const { comments_url } = restBlog
+
+      // 获取评论信息
+      const { data: comments } = await axios.get(comments_url)
+
+      // 处理评论的markdown文本 并且写入到html字段中
+      comments.forEach(({ body: commentBody }, index) => {
+        const commentHtml = handleMarkdownBody(commentBody)
+        comments[index].html = commentHtml
+      })
+
+      // 页面的jsx
       const pageContent = `
       import withMd from '../../lib/with-md'
 
@@ -56,9 +58,11 @@ module.exports = async (blogs) => {
         html: \`${handleMarkdownBody(mdContent)}\`,
       })
     `
-      const blogDir = path.join(pageDir, `${mdId}`)
-      fs.mkdirSync(blogDir)
-      fs.writeFileSync(path.join(blogDir, 'index.jsx'), pageContent, 'utf8')
+      // 写入文件
+      fs.writeFileSync(path.join(pageDir, `${mdId}.jsx`), pageContent, 'utf8')
     }
-  })
+  }
+
+  const tasks = mdPaths.map(convertMdToJSX)
+  await Promise.all(tasks)
 }

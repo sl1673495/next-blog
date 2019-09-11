@@ -13,6 +13,7 @@ module.exports = (blogs) => {
     blogs.map(({ body, ...restBlog }) => restBlog),
   )}`
 
-  const indexJsx = templateContent.replace('// #blogs', injectBlogs)
+  // 把blog数据注入到首页中
+  const indexJsx = templateContent.replace('#blogs', injectBlogs)
   fs.writeFileSync(indexPath, indexJsx, 'utf8')
 }
