@@ -4,4 +4,6 @@ if (typeof require !== 'undefined') {
   require.extensions['.css'] = () => {}
 }
 
-module.exports = withCss({})
+module.exports = withCss({
+  exportTrailingSlash: true,
+})

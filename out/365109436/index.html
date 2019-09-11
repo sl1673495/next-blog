@@ -1,0 +1,107 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="referrer" content="no-referrer"/><link rel="stylesheet" href="/static/index.css" type="text/css"/><link rel="stylesheet" href="/static/hljs.css" type="text/css"/><link rel="stylesheet" href="/static/reset.css" type="text/css"/><link rel="stylesheet" href="/static/markdown.css" type="text/css"/><title>ssh的前端博客</title><meta charSet="utf-8"/><meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/><meta name="next-head-count" content="2"/><link rel="preload" href="/_next/static/Nc8mo8XGqmAgpgU6YAhfG/pages/365109436.js" as="script"/><link rel="preload" href="/_next/static/Nc8mo8XGqmAgpgU6YAhfG/pages/_app.js" as="script"/><link rel="preload" href="/_next/static/chunks/22.bfe4263dd9514139326f.js" as="script"/><link rel="preload" href="/_next/static/runtime/webpack-61b9af2a86c3f75f3f39.js" as="script"/><link rel="preload" href="/_next/static/chunks/commons.21d6495a20acbd049aff.js" as="script"/><link rel="preload" href="/_next/static/runtime/main-7ca00c6bb257c339c190.js" as="script"/><style id="__jsx-4024170534">.title.jsx-4024170534{margin-top:0;margin-bottom:42px;}.title.jsx-4024170534 a.jsx-4024170534{color:var(--textTitle);-webkit-text-decoration:none;text-decoration:none;}</style><style id="__jsx-2472489444">body{--textTitle:rgb(255,167,196);}</style><style id="__jsx-4063293197">.title.jsx-1776941920{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;color:var(--textNormal);}.avatar.jsx-1776941920{width:50px;height:50px;border-radius:50%;}.comment.jsx-1776941920{margin-bottom:32px;border-bottom:1px solid #eee;}.user.jsx-1776941920{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;}.login.jsx-1776941920{color:var(--textLink);-webkit-text-decoration:none;text-decoration:none;}.avatar.jsx-1776941920{width:32px;height:32px;border-radius:50%;margin-right:8px;}</style></head><body><div id="__next"><div style="max-width:672px;margin:auto;padding:42px 21px"><div class="jsx-4024170534"><h2 class="jsx-4024170534 title"><a class="jsx-4024170534" href="/">ssh<!-- -->的前端博客</a></h2></div><div class="jsx-1776941920 markdown-body"><h1 class="jsx-1776941920 title">Vue源码学习（2）初始化</h1><div><h3>_init</h3>
+<p>_init 方法在 src/core/instance/init.js 文件被添加到 Vue 的原型上，下面我们就看看 _init 做了什么。</p>
+<pre><code>// a flag to avoid this being observed
+vm._isVue = true
+// merge options
+if (options &amp;&amp; options._isComponent) {
+    // optimize internal component instantiation
+    // since dynamic options merging is pretty slow, and none of the
+    // internal component options needs special treatment.
+    initInternalComponent(vm, options)
+} else {
+    vm.$options = mergeOptions(
+    resolveConstructorOptions(vm.constructor),
+    options || {},
+    vm
+    )
+}
+/* istanbul ignore else */
+if (process.env.NODE_ENV !== 'production') {
+    initProxy(vm)
+} else {
+    vm._renderProxy = vm
+}
+// expose real self
+vm._self = vm
+initLifecycle(vm)
+initEvents(vm)
+initRender(vm)
+callHook(vm, 'beforeCreate')
+initInjections(vm) // resolve injections before data/props
+initState(vm)
+initProvide(vm) // resolve provide after data/props
+callHook(vm, 'created')
+</code></pre>
+<h3>Vue选项的规范化</h3>
+<pre><code>vm.$options = mergeOptions(
+    resolveConstructorOptions(vm.constructor),
+    options || {},
+    vm
+)
+</code></pre>
+<p>要搞懂这个mergeOptions，我们要先看resolveConstructorOptions方法，
+将vm的构造函数传入进去，其实是因为Vue.extend()可以返回构造函数，
+如果是子组件的构造函数，会建立起和父组件的继承关系, 所以这里就是合并父子组件的一些options</p>
+<p>在Vue第一次初始化的时候 不会走if逻辑 所以只会返回Vue.options</p>
+<pre><code>export function resolveConstructorOptions (Ctor: Class&lt;Component&gt;) {
+  let options = Ctor.options
+  if (Ctor.super) {
+    const superOptions = resolveConstructorOptions(Ctor.super)
+    const cachedSuperOptions = Ctor.superOptions
+    if (superOptions !== cachedSuperOptions) {
+      // super option changed,
+      // need to resolve new options.
+      Ctor.superOptions = superOptions
+      // check if there are any late-modified/attached options (#4976)
+      const modifiedOptions = resolveModifiedOptions(Ctor)
+      // update base extend options
+      if (modifiedOptions) {
+        extend(Ctor.extendOptions, modifiedOptions)
+      }
+      options = Ctor.options = mergeOptions(superOptions, Ctor.extendOptions)
+      if (options.name) {
+        options.components[options.name] = Ctor
+      }
+    }
+  }
+  return options
+}
+</code></pre>
+<p>使用mergeHook合并数组里的生命周期
+优先把父子生命周期函数的concat在一起。</p>
+<pre><code>export const LIFECYCLE_HOOKS = [
+  'beforeCreate',
+  'created',
+  'beforeMount',
+  'mounted',
+  'beforeUpdate',
+  'updated',
+  'beforeDestroy',
+  'destroyed',
+  'activated',
+  'deactivated',
+  'errorCaptured'
+]
+
+function mergeHook (
+  parentVal: ?Array&lt;Function&gt;,
+  childVal: ?Function | ?Array&lt;Function&gt;
+): ?Array&lt;Function&gt; {
+  return childVal
+    ? parentVal
+      ? parentVal.concat(childVal)
+      : Array.isArray(childVal)
+        ? childVal
+        : [childVal]
+    : parentVal
+}
+
+return (是否有 childVal，即判断组件的选项中是否有对应名字的生命周期钩子函数)
+  ? 如果有 childVal 则判断是否有 parentVal
+    ? 如果有 parentVal 则使用 concat 方法将二者合并为一个数组
+    : 如果没有 parentVal 则判断 childVal 是不是一个数组
+      ? 如果 childVal 是一个数组则直接返回
+      : 否则将其作为数组的元素，然后返回数组
+  : 如果没有 childVal 则直接返回 parentVal
+</code></pre>
+</div><div class="jsx-1776941920 comments"></div></div></div></div><script id="__NEXT_DATA__" type="application/json">{"dataManager":"[]","props":{"pageProps":{}},"page":"/365109436","query":{},"buildId":"Nc8mo8XGqmAgpgU6YAhfG","nextExport":true,"dynamicIds":["+FGM","+fC4","0kiY","1LUk","28xz","2Vkh","3EHr","3gkP","3wag","4Q+X","4qfg","5VxD","5upZ","6ZBy","6k3J","6quq","73oX","75kF","7P7d","7mzT","7oys","8Kqh","8Pgg","8SK+","9Fqr","9G73","9JLW","9Mhc","9Nr/","9Q8I","9U8A","9c9R","9xzc","AIHI","Aayt","Agkw","AhXs","ApBa","Aqyh","AsRY","B05S","BIHe","BKhn","BLBw","BrQc","CyL5","D68y","DxbC","DzyG","E2cJ","EGmf","FIf5","FJ32","G+vv","G01c","GEZ5","GTAt","GgYO","GwJY","Gxxu","H2RM","H4p3","ImXp","JCUK","JGhL","Jb18","Jjkb","JopO","Jrxr","KK3C","KQfT","KUpP","KcjC","Kjk6","KpOm","KyKy","LOdI","LhHj","Ll1m","Lns6","Lo5G","LptB","MF4s","MQ8/","My+Z","NRrW","NyhX","OZ3z","PGlF","PziN","Q5ZB","QPTg","QQjU","QnJG","RLXu","ROUN","Rq6a","SF9x","SLii","Sl5E","T0rU","TdF3","UCcd","UFGb","UI5O","Uasv","VrLj","WSH0","Wj43","WtIr","Xfvt","YROV","YSo5","ZrqW","alHH","beiO","d4EH","ddo8","dnrZ","dycj","e8E9","ebWy","el66","fDA8","fEaW","fHEK","fP8y","fZ2E","gLO8","gmEm","gst6","hmeD","iTGd","ieeH","iobV","irpp","jKVu","jU8F","jW1C","jctj","kZ3Q","lE5/","lKKg","lRCX","lURu","ldBm","m/If","mBTZ","mY11","mzJY","n3/M","nwyE","o0In","oKc0","oU5B","oVRe","oVqn","on2m","ozyK","phP4","pvv5","pw5m","pxCe","qIW7","qUGr","qZUF","r0Rl","r7oX","rfnV","rnof","s8Vx","sM9k","sbla","syIQ","t6qC","tSgA","tluB","u0OR","u2N3","u34i","uIR8","uQpx","uR4j","unZW","vYiF","wB1n","wi1Z","xj1T","yOV0"]}</script><script async="" data-next-page="/365109436" src="/_next/static/Nc8mo8XGqmAgpgU6YAhfG/pages/365109436.js"></script><script async="" data-next-page="/_app" src="/_next/static/Nc8mo8XGqmAgpgU6YAhfG/pages/_app.js"></script><script async="" src="/_next/static/chunks/22.bfe4263dd9514139326f.js"></script><script src="/_next/static/runtime/webpack-61b9af2a86c3f75f3f39.js" async=""></script><script src="/_next/static/chunks/commons.21d6495a20acbd049aff.js" async=""></script><script src="/_next/static/runtime/main-7ca00c6bb257c339c190.js" async=""></script></body></html>
