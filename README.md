@@ -1,8 +1,11 @@
 # next-blog
-利用nextjs静态导出html的功能实现博客。
+利用nextjs静态导出html的功能实现一键同步github issues博客，生成可以自己定制主题的静态html文件博客！
 
 ### 预览地址
 http://blog.shanshihao.cn
+
+### 对应的我的github blog仓库
+https://github.com/sl1673495/blogs
 
 ### 运行
 安装依赖：
@@ -24,3 +27,7 @@ yarn all
 然后执行`yarn all`，  
 就可以在out目录下生成静态博客目录。
 config中填写client_id和client_secret可以用于取消请求限制。
+
+### 使用[now](https://zeit.co/home)部署
+进入out目录，然后执行`now`，页面就会自动部署了。
+https://out.sl1673495.now.sh/
