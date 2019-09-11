@@ -13,11 +13,14 @@ yarn
 ```
 yarn dev
 ```
-导出博客：
+导出博客(会放在out目录下，导出后请进入out目录后启动anywhere或者http-server类似的静态服务然后访问)：
 ```
 yarn all
 ```
 
 ### 说明
-如果想导出另外的github博客，只需要在config.js里改掉repo的owner和name两个字段，分别对应你的github用户名和博客仓库名，然后执行`yarn all`，就可以在out目录下生成静态博客目录。
+只需要在config.js里改掉repo的owner和name两个字段，  
+分别对应你的github用户名和博客仓库名，  
+然后执行`yarn all`，  
+就可以在out目录下生成静态博客目录。
 config中填写client_id和client_secret可以用于取消请求限制。
