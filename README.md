@@ -24,3 +24,7 @@ yarn all
 然后执行`yarn all`，  
 就可以在out目录下生成静态博客目录。
 config中填写client_id和client_secret可以用于取消请求限制。
+
+### 使用[now](https://zeit.co/home)部署
+进入out目录，然后执行`now`，页面就会自动部署了。
+https://out.sl1673495.now.sh/
