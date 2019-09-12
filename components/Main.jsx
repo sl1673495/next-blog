@@ -7,9 +7,14 @@ export default ({ blogs }) => {
     <div className="introduce">
       <img className="avatar" src={avatar_url} alt="头像" />
       <p className="desc">
-         Personal blog by <a rel="noopener noreferrer" target="_blank" href={html_url}>{login}</a>. I explain with words and code.
+        Personal blog by{' '}
+        <a rel="noopener noreferrer" target="_blank" href={html_url}>
+          {login}
+        </a>
+        . I explain with words and code.
       </p>
-      <style jsx>{`
+      <style jsx>
+        {`
           .introduce {
             display: flex;
             max-width: 300px;
@@ -43,13 +48,14 @@ export default ({ blogs }) => {
           const { id, title } = blog
           return (
             <h3 key={id}>
-              <Link href={`/${id}`}>
+              <Link href={`/${id}`} prefetch={false}>
                 <a className="title-link">{title}</a>
               </Link>
             </h3>
           )
         })}
-        <style jsx>{`
+        <style jsx>
+          {`
             .title-link {
               color: var(--textLink);
               text-decoration: none;

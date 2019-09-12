@@ -4,16 +4,28 @@
 const fs = require('fs')
 const path = require('path')
 
-const templatePath = path.resolve(__dirname, '../pages-template/index.jsx')
 const indexPath = path.resolve(__dirname, '../pages/index.jsx')
-const templateContent = fs.readFileSync(templatePath, 'utf8')
 
 module.exports = (blogs) => {
-  const injectBlogs = `const blogs = ${JSON.stringify(
+  const injectBlogs = JSON.stringify(
     blogs.map(({ body, ...restBlog }) => restBlog),
-  )}`
+  )
 
   // 把blog数据注入到首页中
-  const indexJsx = templateContent.replace('#blogs', injectBlogs)
+  const indexJsx = `
+    import React from 'react'
+    import Link from 'next/link'
+    import Layout from '../components/Layout'
+    import Main from '../components/Main'
+    
+    const blogs = ${injectBlogs}
+    const Home = () => (
+      <Layout>
+        <Main blogs={blogs} />
+      </Layout>
+    )
+    
+    export default Home
+  `
   fs.writeFileSync(indexPath, indexJsx, 'utf8')
 }

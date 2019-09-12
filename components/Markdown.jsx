@@ -1,12 +1,12 @@
 import React from 'react'
-import dynamic from 'next/dynamic'
-
-const Highlight = dynamic(() => import('react-highlight'))
+import Highlight from 'react-highlight'
 
 export default function Markdown(options) {
   const { html: rawHtml } = options
   const html = decodeURIComponent(rawHtml)
   return (
-    <Highlight innerHTML>{html}</Highlight>
+    <div className="markdown-body">
+      <Highlight innerHTML>{html}</Highlight>
+    </div>
   )
 }

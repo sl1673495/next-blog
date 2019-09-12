@@ -41,6 +41,9 @@ module.exports = async (blogs) => {
 
       // 获取评论信息
       const { data: comments } = await axios.get(comments_url)
+        .catch((err) => {
+          console.error('评论生成失败，', err)
+        })
 
       // 处理评论的markdown文本 并且写入到html字段中
       comments.forEach(({ body: commentBody }, index) => {
@@ -50,13 +53,15 @@ module.exports = async (blogs) => {
 
       // 页面的jsx
       const pageContent = `
-      import withMd from '../../lib/with-md'
+      import Page from '../components/Page'
 
-      export default withMd({
+      const pageProps = {
         blog: ${JSON.stringify(restBlog)},
         comments: ${JSON.stringify(comments)},
         html: \`${handleMarkdownBody(mdContent)}\`,
-      })
+      }
+
+      export default () => <Page {...pageProps}/>
     `
       // 写入文件
       fs.writeFileSync(path.join(pageDir, `${mdId}.jsx`), pageContent, 'utf8')
